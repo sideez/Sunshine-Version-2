@@ -42,8 +42,6 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    private final String TAG = ForecastFragment.class.getSimpleName();
-
     private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -67,15 +65,10 @@ public class ForecastFragment extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             updateWeather();
-        }
-
-        if (id == R.id.action_map) {
-            openPreferredLocationInMap();
-
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -85,26 +78,6 @@ public class ForecastFragment extends Fragment {
     public void onStart() {
         super.onStart();
         updateWeather();
-    }
-
-    private void openPreferredLocationInMap() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = sharedPrefs.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
-
-        // Using the URI scheme for showing a location found on a map.  This super-handy
-        // intent is detailed in the "Common Intents" page of Android's developer site:
-        // http://developer.android.com/guide/components/intents-common.html#Maps
-        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
-                .appendQueryParameter("q", location)
-                .build();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.d(TAG, "Couldn't call " + location + ", no receiving apps installed!");
-        }
     }
 
     private void updateWeather() {
@@ -171,7 +144,8 @@ public class ForecastFragment extends Fragment {
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
-            return String.format("%d/%d", roundedHigh, roundedLow);
+            String highLowStr = roundedHigh + "/" + roundedLow;
+            return highLowStr;
         }
 
         /**
