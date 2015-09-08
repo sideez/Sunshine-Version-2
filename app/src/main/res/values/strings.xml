@@ -30,6 +30,7 @@
 
     <string name="pref_unit_imperial">imperial</string>
     <string name="action_map">Map Location</string>
+    <string name="action_share">Share</string>
 
     <!-- List of units in the setting preference -->
     <string-array name="pref_unit_list_titles">
